@@ -1,0 +1,22 @@
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs_app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: "postgresql://neondb_owner:npg_IUHhsV3ZDw5f@ep-spring-leaf-admruv0r-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
+      NODE_ENV: production
+      JWT_SECRET_KEY: qwerty
+      ROLES_KEY: roleskey
+      PORT: 3000
+    command: npm run start:migrate:prod
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
